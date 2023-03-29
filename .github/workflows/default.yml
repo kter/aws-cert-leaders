@@ -2,6 +2,7 @@ on: [push]
 
 env:
   AWS_DEFAULT_REGION: 'ap-northeast-1'
+  AWS_ACCOUNT_ID: "848738341109"
 
 jobs:
   aws_cdk:
@@ -12,7 +13,7 @@ jobs:
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: arn:aws:iam::848738341109:role/aws-cert-leaders-deploy-role
+          role-to-assume: arn:aws:iam::${{ env.AWS_ACCOUNT_ID }}:role/aws-cert-leaders-deploy-role
           role-session-name: samplerolesession
           aws-region: ${{ env.AWS_DEFAULT_REGION }}
 

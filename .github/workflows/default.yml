@@ -1,0 +1,38 @@
+on: [push]
+
+env:
+  AWS_DEFAULT_REGION: 'ap-northeast-1'
+
+jobs:
+  aws_cdk:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git clone the repository
+        uses: actions/checkout@v3
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::848738341109:role/aws-cert-leaders-deploy-role
+          role-session-name: samplerolesession
+          aws-region: ${{ env.AWS_DEFAULT_REGION }}
+
+      - name: cdk diff
+        uses: youyo/aws-cdk-github-actions@v2
+        with:
+          cdk_subcommand: 'diff'
+          actions_comment: true
+
+      - name: cdk deploy
+        uses: youyo/aws-cdk-github-actions@v2
+        with:
+          cdk_subcommand: 'deploy'
+          cdk_stack: 'aws-cert-leaders'
+          cdk_args: '--require-approval never'
+          actions_comment: false
+
+      - name: cdk synth
+        uses: youyo/aws-cdk-github-actions@v2
+        with:
+          cdk_subcommand: 'synth'
+          cdk_version: '2.56.0'
+          working_dir: '.'

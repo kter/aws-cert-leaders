@@ -1,16 +1,22 @@
 import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
-// import * as sqs from 'aws-cdk-lib/aws-sqs';
+import { Stack, StackProps, Duration } from 'aws-cdk-lib';
+import { GithubActionsIdentityProvider, GithubActionsRole } from 'aws-cdk-github-oidc';
+import * as iam from 'aws-cdk-lib/aws-iam';
 
 export class LeaderboardStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    // The code that defines your stack goes here
+    const provider = new GithubActionsIdentityProvider(this, 'GithubProvider');
+    const role = new GithubActionsRole(this, 'DeployRole', {
+      provider: provider,
+      owner: 'kter',
+      repo: 'aws-cert-leaders',
+      roleName: 'aws-cert-leaders-deploy-role',
+      maxSessionDuration: Duration.hours(1),
+    });
 
-    // example resource
-    // const queue = new sqs.Queue(this, 'LeaderboardQueue', {
-    //   visibilityTimeout: cdk.Duration.seconds(300)
-    // });
+    role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AdministratorAccess'));
   }
 }

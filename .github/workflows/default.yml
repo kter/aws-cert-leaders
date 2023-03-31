@@ -46,7 +46,6 @@ jobs:
         with:
           cdk_version: '2.56.0'
           cdk_subcommand: 'deploy'
-          cdk_stack: 'aws-cert-leaders'
           cdk_args: '--require-approval never'
           actions_comment: false
 

@@ -41,6 +41,9 @@ jobs:
           cdk_subcommand: 'diff'
           actions_comment: true
 
+      - name: run test
+        run: npm run test
+
       - name: cdk deploy
         uses: youyo/aws-cdk-github-actions@v2
         with:

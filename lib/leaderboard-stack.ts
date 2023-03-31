@@ -78,7 +78,7 @@ export class LeaderboardStack extends cdk.Stack {
           originAccessIdentity,
         }),
       },
-      priceClass: aws_cloudfront.PriceClass.PRICE_CLASS_ALL,
+      priceClass: aws_cloudfront.PriceClass.PRICE_CLASS_200,
     });
 
     new aws_s3_deployment.BucketDeployment(this, 'WebsiteDeploy', {

@@ -1,9 +1,13 @@
+import '@aws-cdk/assert/jest'
 import * as cdk from 'aws-cdk-lib';
 import { Template } from 'aws-cdk-lib/assertions';
 import * as Leaderboard from '../lib/leaderboard-stack';
 
 import { App } from 'aws-cdk-lib';
 import { LeaderboardStack } from '../lib/leaderboard-stack';
+import { Bucket } from 'aws-cdk-lib/aws-s3';
+import { RemovalPolicy } from 'aws-cdk-lib';
+import { ResourcePart } from '@aws-cdk/assert';
 
 test('should create a Github Actions OIDC role', () => {
   const app = new App();
@@ -34,4 +38,16 @@ test('should create a Github Actions OIDC role', () => {
     ],
     RoleName: 'aws-cert-leaders-deploy-role'
   });
+});
+
+test('website bucket is created with correct configuration', () => {
+  const app = new App();
+  // arrange
+  const stack = new LeaderboardStack(app, 'TestStack');  // create an instance of our stack
+
+  // expected the bucket to be created with the correct properties
+  expect(stack).toHaveResource('AWS::S3::Bucket', {
+    "DeletionPolicy": "Delete"
+  }, ResourcePart.CompleteDefinition);
+
 });

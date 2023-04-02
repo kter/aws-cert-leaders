@@ -51,3 +51,65 @@ test('website bucket is created with correct configuration', () => {
   }, ResourcePart.CompleteDefinition);
 
 });
+
+test('origin access identity is created with correct configuration', () => {
+  const app = new App();
+  const stack = new LeaderboardStack(app, 'TestStack');  // create an instance of our stack
+  expect(stack).toHaveResource('AWS::CloudFront::CloudFrontOriginAccessIdentity', {}, ResourcePart.CompleteDefinition);
+});
+
+test('origin access identity is created with correct configuration', () => {
+  const app = new App();
+  const stack = new LeaderboardStack(app, 'TestStack');  // create an instance of our stack
+  expect(stack).toHaveResource('AWS::CloudFront::CloudFrontOriginAccessIdentity', {}, ResourcePart.CompleteDefinition);
+});
+
+test('s3 bucket policy is created with correct configuration', () => {
+  const app = new App();
+  const stack = new LeaderboardStack(app, 'TestStack');  // create an instance of our stack
+  expect(stack).toHaveResourceLike('AWS::S3::BucketPolicy', {
+    "Bucket": {
+      "Ref": "WebsiteBucket75C24D94"
+    },
+    "PolicyDocument": {
+      "Statement": [
+        {
+          "Action": "s3:GetObject",
+          "Effect": "Allow",
+          "Principal": {
+            "CanonicalUser": {
+              "Fn::GetAtt": [
+                "OriginAccessIdentityDF1E3CAC",
+                "S3CanonicalUserId"
+              ]
+            }
+          },
+          "Resource": {
+            "Fn::Join": [
+              "",
+              [
+                {
+                  "Fn::GetAtt": [
+                    "WebsiteBucket75C24D94",
+                    "Arn"
+                  ]
+                },
+                "/*"
+              ]
+            ]
+          }
+        }
+      ],
+    }
+  });
+});
+
+
+/* 
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::DynamoDB::Table', {
+    SSESpecification: {
+      SSEEnabled: true
+    }
+  });
+*/

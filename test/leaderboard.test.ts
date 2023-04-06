@@ -104,6 +104,32 @@ test('s3 bucket policy is created with correct configuration', () => {
   });
 });
 
+test('web distribution is created and origin is s3', () => {
+  const app = new App();
+  const stack = new LeaderboardStack(app, 'TestStack');  // create an instance of our stack
+  expect(stack).toHaveResourceLike('AWS::CloudFront::Distribution', {
+    "DistributionConfig": {
+      "Origins": [
+        {
+          "S3OriginConfig": {
+            "OriginAccessIdentity": {
+              "Fn::Join": [
+                "",
+                [
+                  "origin-access-identity/cloudfront/",
+                  {
+                    "Ref": "OriginAccessIdentityDF1E3CAC"
+                  }
+                ]
+              ]
+            }
+          }
+        }
+      ]
+    }
+  })
+});
+
 
 /* 
   const template = Template.fromStack(stack);

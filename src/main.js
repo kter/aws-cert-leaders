@@ -72,5 +72,5 @@ const chartJSNodeCanvas = new ChartJSNodeCanvas({width, height});
     const imageBuffer = await chartJSNodeCanvas.renderToBuffer(configuration);
 
     // Write image to file
-    fs.writeFileSync('./mychart.png', imageBuffer);
+    fs.writeFileSync('./chart.png', imageBuffer);
 })();

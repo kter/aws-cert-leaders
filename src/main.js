@@ -43,7 +43,7 @@ const chartJSNodeCanvas = new ChartJSNodeCanvas({width, height});
         },
         options: {
             scales: {
-                y: {
+                x: {
                     beginAtZero: true,
                     stacked: true,
                     title: {
@@ -51,7 +51,7 @@ const chartJSNodeCanvas = new ChartJSNodeCanvas({width, height});
                         text: 'Number of Certifications'
                     }
                 },
-                x: {
+                y: {
                     stacked: true,
                 }
             },
@@ -64,7 +64,7 @@ const chartJSNodeCanvas = new ChartJSNodeCanvas({width, height});
                     position: 'bottom'
                 }
             },
-            indexAxis: 'x',
+            indexAxis: 'y',
             stacked: true
         }
     };

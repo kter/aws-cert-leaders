@@ -1,0 +1,33 @@
+name: Generate Chart Image
+
+on:
+    push:
+        path:
+        - 'src/main.js'
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+        - uses: actions/checkout@v3
+        - name: Install Node.js
+          uses: actions/setup-node@v3
+          with:
+            node-version: '18.x'
+        - name: Install dependencies
+          run: |
+            cd src
+            npm install
+        - name: Generate Chart Image
+          run: node main.js
+        - name: Commit and Push
+          run: |
+            git config --global user.name 'GitHub Actions'
+            git config --global user.email 'no-reply@github.com'
+            cd src
+            git add chart.png
+            git commit -m 'Update chart.png'
+            git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+            git push
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
